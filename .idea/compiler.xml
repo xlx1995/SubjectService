@@ -11,6 +11,7 @@
         <module name="com.xlx.http" />
         <module name="kafkaclient" />
         <module name="publicForSubject" />
+        <module name="redisclient" />
       </profile>
     </annotationProcessing>
   </component>

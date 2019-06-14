@@ -12,6 +12,7 @@
     <module>com.xlx.client</module>
     <module>kafka.client</module>
     <module>com.xlx.http</module>
+      <module>redis.client</module>
   </modules>
   <packaging>pom</packaging>
 
