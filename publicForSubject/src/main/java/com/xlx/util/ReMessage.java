@@ -14,11 +14,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReMessage {
 
-    private boolean success;
+    private boolean success = true;
 
     private Object data;
 
-    private String message;
+    private String message = "ok";
 
 
 }

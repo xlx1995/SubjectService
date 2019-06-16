@@ -20,5 +20,8 @@
   		insert into user (user_name , user_password) values (#{user_name} ,#{user_password})
   	</insert>
   	
-  	
+  	<select id="getAllUser" resultType="User">
+		select * from user
+	</select>
+
 </mapper>

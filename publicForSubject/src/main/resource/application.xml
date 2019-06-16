@@ -14,6 +14,7 @@
             <list>
                 <value>classpath:db.properties</value>
                 <value>classpath:core.properties</value>
+                <value>classpath:redis.properties</value>
             </list>
 
         </property>
@@ -50,6 +51,8 @@
         <property name="url" value="${userUrl}"/>
     </bean>
 
+
+    <import resource="classpath:application-redis.xml"/>
 
 
 </beans>

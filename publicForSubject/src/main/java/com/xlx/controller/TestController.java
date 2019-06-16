@@ -4,6 +4,7 @@ package com.xlx.controller;
 
 
 import com.alibaba.fastjson.JSON;
+import com.xlx.client.JedisClient;
 import com.xlx.db.entity.Person;
 import com.xlx.db.entity.User;
 import com.xlx.service.UserService;
@@ -29,6 +30,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/test")
 @Api(value = "/user", tags = "User接口")
 public class TestController {
+
+
 
     @Autowired
     private UserService us ;
@@ -62,6 +65,13 @@ public class TestController {
         log.info(RestClient.class.getName());
 
         return RestClient.t();
+    }
+
+    @RequestMapping(value = "user" ,method = RequestMethod.GET)
+    public ReMessage getAllUser(){
+
+        return us.getAllUser();
+
     }
 
 

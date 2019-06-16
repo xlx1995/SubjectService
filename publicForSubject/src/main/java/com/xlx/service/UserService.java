@@ -1,6 +1,7 @@
 package com.xlx.service;
 
 import com.xlx.db.entity.User;
+import com.xlx.util.ReMessage;
 
 /**
  * @Auther: 徐林啸
@@ -10,4 +11,7 @@ import com.xlx.db.entity.User;
 public interface UserService {
 
     User checkUser(User user);
+
+    ReMessage getAllUser();
+
 }
