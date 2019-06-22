@@ -6,7 +6,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 
-    <context:component-scan base-package="com.xlx.service.impl"/>
+    <context:component-scan base-package="com.xlx.impl"/>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
@@ -36,7 +36,7 @@
 
     <bean class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="comboPooledDataSource"></property>
-        <property name="typeAliasesPackage" value="com.xlx.db.entity"></property>
+        <property name="typeAliasesPackage" value="com.xlx.entity"></property>
         <property name="mapperLocations" value="classpath:com/xlx/db/mapper/*Mapper.xml"></property>
     </bean>
 
@@ -52,7 +52,9 @@
     </bean>
 
 
-    <import resource="classpath:application-redis.xml"/>
 
+    <import resource="classpath:application-redis.xml"/>
+    <import resource="classpath:applica-kafka.xml"/>
+    <import resource="application-dubbo.xml"/>
 
 </beans>

@@ -1,26 +1,25 @@
-package com.xlx.service.impl;
+package com.xlx.impl;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.xlx.common.cache.UserCache;
-import com.xlx.db.entity.User;
+
 import com.xlx.db.mapper.UserMapper;
+import com.xlx.entity.User;
 import com.xlx.service.UserService;
 import com.xlx.util.ReMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * @Auther: 徐林啸
- * @Date: 2019/6/5 22:52
+ * @Date: 2019/6/22 19:41
  * @Description:
  */
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
-
-
     @Autowired
     private UserMapper um ;
 
@@ -53,6 +52,4 @@ public class UserServiceImpl implements UserService {
         }
 
     }
-
-
 }

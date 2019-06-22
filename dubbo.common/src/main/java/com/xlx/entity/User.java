@@ -1,6 +1,6 @@
-package com.xlx.db.entity;
+package com.xlx.entity;
 
-import io.swagger.annotations.Api;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

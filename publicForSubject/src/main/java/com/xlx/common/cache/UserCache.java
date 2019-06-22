@@ -1,6 +1,8 @@
 package com.xlx.common.cache;
 
-import com.xlx.db.entity.User;
+
+
+import com.xlx.entity.User;
 
 import java.util.List;
 

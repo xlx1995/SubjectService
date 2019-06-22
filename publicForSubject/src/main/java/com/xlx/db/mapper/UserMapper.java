@@ -1,6 +1,8 @@
 package com.xlx.db.mapper;
 
-import com.xlx.db.entity.User;
+
+
+import com.xlx.entity.User;
 
 import java.util.List;
 

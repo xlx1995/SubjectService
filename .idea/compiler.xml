@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="com.xlx.client" />
         <module name="com.xlx.http" />
+        <module name="dubbo.common" />
         <module name="kafkaclient" />
         <module name="publicForSubject" />
         <module name="redisclient" />
