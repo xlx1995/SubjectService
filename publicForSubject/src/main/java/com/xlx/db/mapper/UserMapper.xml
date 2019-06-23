@@ -20,8 +20,27 @@
   		insert into user (user_name , user_password) values (#{user_name} ,#{user_password})
   	</insert>
   	
-  	<select id="getAllUser" resultType="User">
+  	<select id="getAllUser" resultType="User" >
 		select * from user
 	</select>
+
+	<select id="query" parameterType="User" resultType="User">
+		select * from user
+		where 1=1
+		<if test="user_id != null">
+			and user_id = #{user_id}
+		</if>
+	</select>
+
+	<update id="update" parameterType="User">
+		update User set user_name = #{user_name}
+        where user_id = #{user_id}
+	</update>
+
+	<delete id="delete" parameterType="User">
+		delete from User where 1=1
+		and user_id = #{user_id}
+	</delete>
+
 
 </mapper>

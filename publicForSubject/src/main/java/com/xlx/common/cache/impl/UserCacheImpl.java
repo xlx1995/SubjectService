@@ -29,10 +29,20 @@ public class UserCacheImpl implements UserCache {
     }
 
     @Override
-    public void save(List<User> users) {
-
-        String s = JSON.toJSONString(users);
-        jedisClient.set("UserList" , s);
-
+    public User load(User user) {
+        String s = jedisClient.get(String.valueOf(user.getUser_id()));
+        User users_ = JSON.parseObject(s, User.class);
+        return users_;
     }
+
+    @Override
+    public void save(List<User> users) {
+        jedisClient.set("UserList", JSON.toJSONString(users));
+    }
+
+    @Override
+    public void save(User user) {
+        jedisClient.set(String.valueOf(user.getUser_id()) , JSON.toJSONString(user));
+    }
+
 }

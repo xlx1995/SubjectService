@@ -32,5 +32,6 @@ public class JedisClientUtilTest {
 
     @Test
     public void get() {
+        String s = jedisClient.get("5");
     }
 }

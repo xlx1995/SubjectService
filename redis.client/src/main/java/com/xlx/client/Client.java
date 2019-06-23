@@ -23,7 +23,7 @@ public class Client {
 
         jedis.set("monkey", "xlx");
 
-        System.out.println(jedis.get("monkey"));
+        System.out.println(jedis.get("5"));
         jedis.close();
 
     }

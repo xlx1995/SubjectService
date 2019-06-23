@@ -15,6 +15,12 @@ public interface UserCache {
 
     List<User> load();
 
+    User load(User user);
+
     void save(List<User> users);
+
+    void save(User users);
+
+
 
 }

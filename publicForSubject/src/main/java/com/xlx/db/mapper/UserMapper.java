@@ -12,7 +12,17 @@ public interface UserMapper {
 	
 	User checkUser(String user_name);
 
-	boolean save(User user);
+	Integer save(User user);
 
 	List<User> getAllUser();
+
+	List<User> query(User user);
+
+	Integer delete(User user);
+
+	Integer update(User user);
+
+
+
+
 }
