@@ -30,7 +30,7 @@ public class UserCacheImpl implements UserCache {
 
     @Override
     public User load(User user) {
-        String s = jedisClient.get(String.valueOf(user.getUser_id()));
+        String s = jedisClient.get(user.getUser_id());
         User users_ = JSON.parseObject(s, User.class);
         return users_;
     }
@@ -42,7 +42,7 @@ public class UserCacheImpl implements UserCache {
 
     @Override
     public void save(User user) {
-        jedisClient.set(String.valueOf(user.getUser_id()) , JSON.toJSONString(user));
+        jedisClient.set(user.getUser_id() , JSON.toJSONString(user));
     }
 
 }

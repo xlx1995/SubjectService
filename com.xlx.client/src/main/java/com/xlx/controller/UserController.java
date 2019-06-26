@@ -46,7 +46,7 @@ public class UserController {
     @ApiOperation(value = "根据id获取用户信息", notes = "获取用户信息", httpMethod = "GET", response = ReMessage.class)
     public ReMessage query(@PathVariable("id") String id){
         User user = new User();
-        user.setUser_id(Integer.parseInt(id));
+        user.setUser_id(id);
         return userService.query(user);
     }
 
@@ -54,7 +54,7 @@ public class UserController {
     @ApiOperation(value = "根据id删除信息", notes = "删除用户", httpMethod = "DELETE", response = ReMessage.class)
     public ReMessage delete(@PathVariable("id") String id){
         User user = new User();
-        user.setUser_id(Integer.parseInt(id));
+        user.setUser_id(id);
         return userService.delete(user);
     }
 

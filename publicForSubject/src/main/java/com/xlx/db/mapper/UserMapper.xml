@@ -27,7 +27,7 @@
 	<select id="query" parameterType="User" resultType="User">
 		select * from user
 		where 1=1
-		<if test="user_id != null">
+		<if test="user_id != null and user_id != ''">
 			and user_id = #{user_id}
 		</if>
 	</select>

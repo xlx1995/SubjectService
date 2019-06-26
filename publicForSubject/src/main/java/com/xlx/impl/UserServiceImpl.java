@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
             return  reMessage;
         }else{
             log.info("从数据库中取数据");
-            load = um.query(null);
+            load = um.query();
             reMessage.setData(load);
             userCache.save(load);
             return  reMessage;
@@ -61,25 +61,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public ReMessage query(User user) {
         ReMessage reMessage = new ReMessage(false, null, "");
-        List<User> user_tmp = null;
+        User user_bak  = null;
         try{
-            User load = userCache.load(user);
-            user_tmp.add(load);
+            user_bak = userCache.load(user);
+
         }catch (Throwable e){
             e.printStackTrace();
             log.error("redis --错误");
         }
-        if(user_tmp!=null && user_tmp.size()!=0){
+        if(user_bak!=null){
             log.info("从缓存中读取数据");
-            reMessage.setData(user_tmp);
+            reMessage.setData(user_bak);
             reMessage.setSuccess(true);
         }else {
             log.info("从数据库中读取数据");
-            user_tmp = um.query(user);
-            for(User user_bak : user_tmp){
-                userCache.save(user_bak);
-            }
-            reMessage.setData(user_tmp);
+            user_bak = um.query(user);
+            userCache.save(user_bak);
+            reMessage.setData(user_bak);
             reMessage.setSuccess(true);
         }
         return reMessage;

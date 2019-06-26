@@ -16,7 +16,9 @@ public interface UserMapper {
 
 	List<User> getAllUser();
 
-	List<User> query(User user);
+	User query(User user);
+
+	List<User> query();
 
 	Integer delete(User user);
 
