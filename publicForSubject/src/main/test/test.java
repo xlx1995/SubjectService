@@ -1,5 +1,9 @@
 import com.alibaba.fastjson.JSON;
+import com.xlx.kafka.client.KafkaConsumerClient;
+import com.xlx.kafka.client.KafkaProducerClient;
 import com.xlx.db.entity.Person;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.producer.Producer;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -31,6 +35,19 @@ public class test {
         System.out.println(people);
 
 
+    }
+    @Test
+    public void producer(){
+        KafkaProducerClient kafkaProducerClient = new KafkaProducerClient();
+        Producer<String, String> kafkaProducer = kafkaProducerClient.getKafkaProducer();
+        kafkaProducerClient.close(kafkaProducer);
+
+    }
+    @Test
+    public void consumer(){
+        KafkaConsumerClient kafkaConsumerClient = new KafkaConsumerClient();
+        KafkaConsumer consumer = kafkaConsumerClient.getKafkaConsumer("test-consumer-group");
+        kafkaConsumerClient.close(consumer);
     }
 
 }

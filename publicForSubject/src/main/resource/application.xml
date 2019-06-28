@@ -57,7 +57,6 @@
 
 
     <import resource="classpath:application-redis.xml"/>
-    <import resource="classpath:applica-kafka.xml"/>
     <import resource="application-dubbo.xml"/>
 
 </beans>

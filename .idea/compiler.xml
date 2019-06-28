@@ -10,10 +10,13 @@
         <module name="com.xlx.client" />
         <module name="com.xlx.http" />
         <module name="dubbo.common" />
-        <module name="kafkaclient" />
+        <module name="kafka" />
         <module name="publicForSubject" />
         <module name="redisclient" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="kafkaclient" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

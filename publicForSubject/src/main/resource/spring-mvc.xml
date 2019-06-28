@@ -11,11 +11,7 @@
     <context:component-scan base-package="com.xlx.controller"/>
     <mvc:annotation-driven/>
 
-    <!-- ======================================== swagger2 config ============================================== -->
-    <bean class="com.xlx.swagger2.Swagger2Config"/>
-    <mvc:default-servlet-handler />
-    <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>
-    <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
+
 
 
     <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">

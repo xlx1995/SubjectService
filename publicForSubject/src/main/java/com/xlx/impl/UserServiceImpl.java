@@ -8,6 +8,8 @@ import com.xlx.entity.User;
 import com.xlx.service.UserService;
 import com.xlx.util.ReMessage;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -20,6 +22,9 @@ import java.util.List;
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
+
+    private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Autowired
     private UserMapper um ;
 
@@ -42,14 +47,14 @@ public class UserServiceImpl implements UserService {
             load = userCache.load();
         }catch (Throwable e){
             e.printStackTrace();
-            log.error("redis 连接错误");
+            logger.error("redis 连接错误");
         }
         if(load!=null && load.size()!=0){
-            log.info("从缓存中取数据");
+            logger.info("从缓存中取数据");
             reMessage.setData(load);
             return  reMessage;
         }else{
-            log.info("从数据库中取数据");
+            logger.info("从数据库中取数据");
             load = um.query();
             reMessage.setData(load);
             userCache.save(load);
@@ -67,14 +72,14 @@ public class UserServiceImpl implements UserService {
 
         }catch (Throwable e){
             e.printStackTrace();
-            log.error("redis --错误");
+            logger.error("redis --错误");
         }
         if(user_bak!=null){
-            log.info("从缓存中读取数据");
+            logger.info("从缓存中读取数据");
             reMessage.setData(user_bak);
             reMessage.setSuccess(true);
         }else {
-            log.info("从数据库中读取数据");
+            logger.info("从数据库中读取数据");
             user_bak = um.query(user);
             userCache.save(user_bak);
             reMessage.setData(user_bak);
@@ -91,7 +96,7 @@ public class UserServiceImpl implements UserService {
             delete = um.delete(user);
         }catch (Throwable e){
             e.printStackTrace();
-            log.error("数据库错误");
+            logger.error("数据库错误");
         }
         if(delete >0){
             reMessage.setSuccess(true);
@@ -111,7 +116,7 @@ public class UserServiceImpl implements UserService {
             update = um.update(user);
         }catch (Throwable e){
             e.printStackTrace();
-            log.error("数据库错误");
+            logger.error("数据库错误");
         }
         if(update >0){
             reMessage.setSuccess(true);
@@ -131,7 +136,7 @@ public class UserServiceImpl implements UserService {
             save = um.save(user);
         }catch (Throwable e){
             e.printStackTrace();
-            log.error("数据库错误");
+            logger.error("数据库错误");
         }
         if(save >0){
             reMessage.setSuccess(true);

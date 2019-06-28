@@ -10,10 +10,10 @@
   <modules>
     <module>publicForSubject</module>
     <module>com.xlx.client</module>
-    <module>kafka.client</module>
     <module>com.xlx.http</module>
       <module>redis.client</module>
       <module>dubbo.common</module>
+    <module>kafka</module>
   </modules>
   <packaging>pom</packaging>
 
@@ -40,38 +40,11 @@
 
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
-      <scope>test</scope>
-    </dependency>
-
-
-
-    <!-- swagger2 -->
-    <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-swagger2</artifactId>
-      <version>${springfox.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-swagger-ui</artifactId>
-      <version>${springfox.version}</version>
-    </dependency>
-
-    <!--<dependency>-->
-      <!--<groupId>com.fasterxml.jackson.core</groupId>-->
-      <!--<artifactId>jackson-annotations</artifactId>-->
-      <!--<version>2.9.8</version>-->
-    <!--</dependency>-->
-
-    <!--<dependency>-->
-      <!--<groupId>com.fasterxml.jackson.core</groupId>-->
-      <!--<artifactId>jackson-databind</artifactId>-->
-      <!--<version>2.9.8</version>-->
-    <!--</dependency>-->
-
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.11</version>
+    <scope>test</scope>
+  </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
     <dependency>
@@ -130,18 +103,13 @@
       <version>${spring-version}</version>
     </dependency>
 
-      <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-tx</artifactId>
-          <version>${spring-version}</version>
-      </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
+      <version>${spring-version}</version>
+    </dependency>
 
-    <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.springframework/spring &ndash;&gt;-->
-    <!--<dependency>-->
-      <!--<groupId>org.springframework</groupId>-->
-      <!--<artifactId>spring</artifactId>-->
-      <!--<version>${spring}</version>-->
-    <!--</dependency>-->
+
 
 
     <dependency>
@@ -194,12 +162,11 @@
 
 
     <dependency>
-           <groupId>javax.servlet</groupId>
-          <artifactId>servlet-api</artifactId>
-           <version>2.5</version>
-           <scope>provided</scope>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.5</version>
+      <scope>provided</scope>
     </dependency>
-
 
     <!--slf4j+logback进行日志记录-->
     <dependency>
@@ -217,6 +184,7 @@
       <artifactId>jcl-over-slf4j</artifactId>
       <version>${jcl-over-slf4j-version}</version>
     </dependency>
+
 
 
   </dependencies>
