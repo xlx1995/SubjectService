@@ -5,6 +5,8 @@ import com.xlx.client.JedisClient;
 import com.xlx.common.cache.UserCache;
 
 import com.xlx.entity.User;
+import com.xlx.kafka.client.KafkaConsumerClient;
+import com.xlx.kafka.client.KafkaProducerClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

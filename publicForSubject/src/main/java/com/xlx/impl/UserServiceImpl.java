@@ -80,10 +80,16 @@ public class UserServiceImpl implements UserService {
             reMessage.setSuccess(true);
         }else {
             logger.info("从数据库中读取数据");
-            user_bak = um.query(user);
-            userCache.save(user_bak);
-            reMessage.setData(user_bak);
-            reMessage.setSuccess(true);
+            if(null != um.query(user)){
+                user_bak = um.query(user);
+                userCache.save(user_bak);
+                reMessage.setData(user_bak);
+                reMessage.setSuccess(true);
+            }else{
+                reMessage.setMessage("查无此人");
+                reMessage.setData(null);
+                reMessage.setSuccess(false);
+            }
         }
         return reMessage;
     }
@@ -114,6 +120,7 @@ public class UserServiceImpl implements UserService {
         Integer update = 0;
         try{
             update = um.update(user);
+
         }catch (Throwable e){
             e.printStackTrace();
             logger.error("数据库错误");
@@ -121,6 +128,11 @@ public class UserServiceImpl implements UserService {
         if(update >0){
             reMessage.setSuccess(true);
             reMessage.setMessage("更新成功");
+            try{
+                userCache.save(user);
+            }catch (Throwable e){
+                log.warn("fail to update cach -- " + e);
+            }
         }else{
             reMessage.setSuccess(false);
             reMessage.setMessage("更新失败");

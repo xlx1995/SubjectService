@@ -1,0 +1,2 @@
+当执行update操作时，kafkaproducer 发布一个消息
+kafkaconsumer执行订阅，并更新缓存

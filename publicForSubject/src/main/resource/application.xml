@@ -51,9 +51,10 @@
         <property name="url" value="${userUrl}"/>
     </bean>
 
+    <bean id="kafkaConsumerClient" class="com.xlx.kafka.client.KafkaConsumerClient"></bean>
+    <bean id="kafkaProducerClient" class="com.xlx.kafka.client.KafkaProducerClient"></bean>
 
-
-
+    <bean class="com.xlx.dbcache.UserCachePersistence" id="userCache" init-method="init"></bean>
 
 
     <import resource="classpath:application-redis.xml"/>

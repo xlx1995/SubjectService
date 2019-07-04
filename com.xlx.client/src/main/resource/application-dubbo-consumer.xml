@@ -16,7 +16,7 @@
 
     <!-- 使用zookeeper注册中心暴露服务地址 -->
     <!-- 注册中心地址 -->
-    <dubbo:registry protocol="zookeeper" address="zookeeper://192.168.159.128:9689" />
+    <dubbo:registry protocol="zookeeper" address="zookeeper://192.168.159.130:9689" />
 
     <dubbo:reference interface="com.xlx.service.UserService" id="userService" check="false" />
 
