@@ -23,5 +23,7 @@ public class ReMessage implements Serializable {
 
     private String message = "ok";
 
+    private Integer code;
+
 
 }

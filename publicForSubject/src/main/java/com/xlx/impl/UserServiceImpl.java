@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ReMessage query(User user) {
-        ReMessage reMessage = new ReMessage(false, null, "");
+        ReMessage reMessage = new ReMessage(false, null, "",0);
         User user_bak  = null;
         try{
             user_bak = userCache.load(user);
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ReMessage delete(User user) {
-        ReMessage reMessage = new ReMessage(false, null, "");
+        ReMessage reMessage = new ReMessage(false, null, "",0);
         Integer delete = 0;
         try{
             delete = um.delete(user);
@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ReMessage update(User user) {
-        ReMessage reMessage = new ReMessage(false, null, "");
+        ReMessage reMessage = new ReMessage(false, null, "",0);
         Integer update = 0;
         try{
             update = um.update(user);
@@ -142,7 +142,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ReMessage save(User user) {
-        ReMessage reMessage = new ReMessage(false, null, "");
+        ReMessage reMessage = new ReMessage(false, null, "",0);
         Integer save = 0;
         try{
             save = um.save(user);

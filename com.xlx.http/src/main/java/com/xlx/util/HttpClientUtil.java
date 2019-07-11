@@ -1,12 +1,14 @@
 package com.xlx.util;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
@@ -19,10 +21,14 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 
 
 /**
@@ -37,6 +43,7 @@ public class HttpClientUtil {
     private static PoolingHttpClientConnectionManager connMgr;
     private static RequestConfig requestConfig;
     private static final int MAX_TIMEOUT = 7000;
+
     static {
         // 设置连接池
         connMgr = new PoolingHttpClientConnectionManager();
@@ -55,33 +62,37 @@ public class HttpClientUtil {
         configBuilder.setStaleConnectionCheckEnabled(true);
         requestConfig = configBuilder.build();
     }
+
     /**
      * 发送get请求不带参数
+     *
      * @param url
      * @return
      */
-    public static String sendGet(String url){
+    public static String sendGet(String url) {
 
         return sendGet(url, null);
     }
+
     /**
      * 发送get请求
+     *
      * @param url
      * @param map
      * @return
      */
-    public static String sendGet(String url,Map<String, String> map){
+    public static String sendGet(String url, Map<String, String> map) {
 
         String resulrStr = null;
         StringBuffer parms = null;
         //创建HttpClient对象
         CloseableHttpClient httpClient = HttpClients.createDefault();
         //设置请求参数
-        if(null != map && !map.isEmpty()){
+        if (null != map && !map.isEmpty()) {
             //遍历map
             parms = new StringBuffer();
-            for(Entry<String , String> entry:map.entrySet()){
-                parms.append("&"+entry.getKey()+"="+entry.getValue());
+            for (Entry<String, String> entry : map.entrySet()) {
+                parms.append("&" + entry.getKey() + "=" + entry.getValue());
             }
             url = url + parms.toString();
         }
@@ -92,17 +103,17 @@ public class HttpClientUtil {
             //发送（执行）请求
             CloseableHttpResponse response = httpClient.execute(httpGet);
             //获取响应头、内容
-            int statusCode =  response.getStatusLine().getStatusCode();
+            int statusCode = response.getStatusLine().getStatusCode();
             //打印状态码
-            log.info("执行状态码："+statusCode);
+            log.info("执行状态码：" + statusCode);
             HttpEntity entity = response.getEntity();
-            resulrStr = IOUtils.toString(entity.getContent(),"UTF-8");
+            resulrStr = IOUtils.toString(entity.getContent(), "UTF-8");
             response.close();
         } catch (ClientProtocolException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             close(httpClient);
         }
         return resulrStr;
@@ -110,11 +121,12 @@ public class HttpClientUtil {
 
     /**
      * 发送post请求
+     *
      * @param url
      * @param map
      * @return
      */
-    public static String sendPost(String url,Map<String, String> map){
+    public static String sendPost(String url, Map<String, String> map) {
 
         String resultStr = null;
         //创建HttpClient对象
@@ -127,14 +139,14 @@ public class HttpClientUtil {
         parmsForm = createUrl(parmsForm, map);
         UrlEncodedFormEntity entity;
         try {
-            entity = new UrlEncodedFormEntity(parmsForm,"UTF-8");
+            entity = new UrlEncodedFormEntity(parmsForm, "UTF-8");
             //为方法实例设置参数队列实体
             httpPost.setEntity(entity);
             //发送（执行）
             CloseableHttpResponse response = httpClient.execute(httpPost);
             //获取状态码
             int statusCode = response.getStatusLine().getStatusCode();
-            System.out.println("执行状态码："+statusCode);
+            System.out.println("执行状态码：" + statusCode);
             //获取响应内容
             HttpEntity httpEntity = response.getEntity();
             resultStr = IOUtils.toString(httpEntity.getContent(), "UTF-8");
@@ -145,15 +157,15 @@ public class HttpClientUtil {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             close(httpClient);
         }
         return resultStr;
     }
 
 
-    public static List<NameValuePair> createUrl(List<NameValuePair> parmsForm,Map<String, String> map){
-        for(Entry<String, String> entry : map.entrySet()){
+    public static List<NameValuePair> createUrl(List<NameValuePair> parmsForm, Map<String, String> map) {
+        for (Entry<String, String> entry : map.entrySet()) {
             parmsForm.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
         }
         return parmsForm;
@@ -161,11 +173,12 @@ public class HttpClientUtil {
 
     /**
      * 发送put请求
+     *
      * @param url
      * @param map
      * @return
      */
-    public static String sendPut(String url,Map<String, String> map){
+    public static String sendPut(String url, Map<String, String> map) {
 
         String resultStr = null;
         //新建httpClient对象
@@ -184,7 +197,7 @@ public class HttpClientUtil {
             //发送
             CloseableHttpResponse response = httpClient.execute(httpPut);
             //获取状态码
-            int statusCode =  response.getStatusLine().getStatusCode();
+            int statusCode = response.getStatusLine().getStatusCode();
             System.out.println(statusCode);
             //获取响应内容
             HttpEntity httpEntity = response.getEntity();
@@ -197,7 +210,7 @@ public class HttpClientUtil {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             close(httpClient);
         }
         return resultStr;
@@ -205,10 +218,11 @@ public class HttpClientUtil {
 
     /**
      * 发送delete请求
+     *
      * @param url
      * @return
      */
-    public static String sendDelete(String url){
+    public static String sendDelete(String url) {
 
         String resultStr = null;
         //创建httpClient对象
@@ -221,7 +235,7 @@ public class HttpClientUtil {
             CloseableHttpResponse response = httpClient.execute(httpDelete);
             //获取响应状态码
             int statusCode = response.getStatusLine().getStatusCode();
-            log.info("状态码--"+statusCode);
+            log.info("状态码--" + statusCode);
             //获取响应内容
             HttpEntity entity = response.getEntity();
             resultStr = IOUtils.toString(entity.getContent(), "UTF-8");
@@ -230,20 +244,49 @@ public class HttpClientUtil {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             close(httpClient);
         }
         return resultStr;
     }
 
-    public static void close(CloseableHttpClient httpClient){
-        if(null != httpClient){
-            try{
+    public static void close(CloseableHttpClient httpClient) {
+        if (null != httpClient) {
+            try {
                 httpClient.close();
-            }catch (Throwable e){
+            } catch (Throwable e) {
                 log.error("fail to close HttpClient" + e);
             }
         }
+    }
+
+    public static int saveFile(String url, File file) {
+        int code = 1;
+        try {
+            CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+            CloseableHttpResponse httpResponse = null;
+            HttpPost httpPost = new HttpPost(url);
+            httpPost.setConfig(requestConfig);
+            MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create().setMode(HttpMultipartMode.RFC6532);
+            multipartEntityBuilder.setCharset(Charset.forName("UTF-8"));
+            multipartEntityBuilder.addBinaryBody("file", file);
+            httpPost.setEntity(multipartEntityBuilder.build());
+            httpResponse = httpClient.execute(httpPost);
+            HttpEntity responseEntity = httpResponse.getEntity();
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode == 200) {
+                String s = EntityUtils.toString(responseEntity,"UTF-8");
+                JSONObject jsonObject = JSON.parseObject(s);
+                code = (int) jsonObject.get("code");
+            }
+            httpClient.close();
+            if (httpResponse != null) {
+                httpResponse.close();
+            }
+        } catch (Throwable e) {
+            log.warn("fail to execute htpPost" + e);
+        }
+        return code;
     }
 
 

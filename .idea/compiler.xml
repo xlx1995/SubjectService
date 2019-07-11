@@ -7,15 +7,18 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="com.xlx.client" />
+        <module name="com.xlx.commons" />
         <module name="com.xlx.http" />
         <module name="dubbo.common" />
         <module name="kafka" />
         <module name="publicForSubject" />
         <module name="redisclient" />
+        <module name="server" />
+        <module name="XClient" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="com.xlx.server" target="1.8" />
       <module name="kafkaclient" target="1.8" />
     </bytecodeTargetLevel>
   </component>
