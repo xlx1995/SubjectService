@@ -1,6 +1,7 @@
 package com.xlx.util;
 
 import java.io.*;
+import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +11,10 @@ import java.util.Map.Entry;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
@@ -21,9 +24,11 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -222,32 +227,40 @@ public class HttpClientUtil {
      * @param url
      * @return
      */
-    public static String sendDelete(String url) {
+    public static String sendDelete(String url,Map<String, String> param) {
 
-        String resultStr = null;
-        //创建httpClient对象
+        // 创建Httpclient对象
         CloseableHttpClient httpClient = HttpClients.createDefault();
-        //创建方法实例
-        HttpDelete httpDelete = new HttpDelete(url);
-        httpDelete.setConfig(requestConfig);
-        //执行
+        CloseableHttpResponse response = null;
+        String resultString = "";
         try {
-            CloseableHttpResponse response = httpClient.execute(httpDelete);
-            //获取响应状态码
-            int statusCode = response.getStatusLine().getStatusCode();
-            log.info("状态码--" + statusCode);
-            //获取响应内容
-            HttpEntity entity = response.getEntity();
-            resultStr = IOUtils.toString(entity.getContent(), "UTF-8");
-            response.close();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            // 创建uri
+            URIBuilder builder = new URIBuilder(url);
+            if (param != null) {
+                for (String key : param.keySet()) {
+                    builder.addParameter(key, param.get(key));
+                }
+            }
+            URI uri = builder.build();
+            // 创建Http Delete请求
+            HttpDelete httpDelete = new HttpDelete(uri);
+            // 执行http请求
+            response = httpClient.execute(httpDelete);
+            resultString = EntityUtils.toString(response.getEntity(), "UTF-8");
+        } catch (Exception e) {
+            log.error("" + e);
         } finally {
-            close(httpClient);
+            try {
+                if (response != null) {
+                    response.close();
+                }
+            } catch (IOException e) {
+                log.error("" + e);
+            }
         }
-        return resultStr;
+        return resultString;
+
+
     }
 
     public static void close(CloseableHttpClient httpClient) {
@@ -289,5 +302,22 @@ public class HttpClientUtil {
         return code;
     }
 
+
+    public static void download(String remoteFileName, String localFileName,String url){
+        DefaultHttpClient httpClient = new DefaultHttpClient();
+        OutputStream out = null;
+        InputStream in = null;
+
+        try {
+            HttpGet httpGet = new HttpGet(url+"?fileName=" + remoteFileName);
+            HttpResponse httpResponse = httpClient.execute(httpGet);
+            HttpEntity entity = httpResponse.getEntity();
+            String s = EntityUtils.toString(entity,"UTF-8");
+            byte[] bytes = s.getBytes();
+            FileUtils.getFile(bytes, "E:\\file\\test", localFileName);
+        }catch (Throwable e){
+            log.error("fail to write file[{}] ex[{}]" , new Object[]{localFileName},e);
+        }
+    }
 
 }

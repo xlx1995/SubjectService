@@ -1,6 +1,7 @@
 package client.impl;
 
 import client.FileClient;
+import com.xlx.util.HttpClientUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -23,14 +24,26 @@ import static org.junit.Assert.*;
  */
 public class FileClientImplTest {
 
+    @Test
+    public void delete(){
+
+        String url = "http://localhost:8080/server/file/delete";
+        String fileName ="test.txt";
+        FileClient fileClient = new FileClientimpl();
+        String delete = fileClient.delete(url, fileName);
+        System.out.println(delete);
+
+    }
 
     @Test
-    public void t(){
-        String url = "http://localhost:8080/server/file/upload";
-        File file = new File("E:\\file\\test.txt");
-        FileClient fileClient = new FileClientImpl();
-        int i = fileClient.uploadFile(url, file);
-        System.out.println(i);
+    public void download(){
+        String url = "http://localhost:8080/server/file/download";
+        String remoteFile = "test.txt";
+        String localName = "t.txt";
+        FileClient fileClient = new FileClientimpl();
+        fileClient.download(remoteFile, localName, url);
+
+
     }
 
     @Test

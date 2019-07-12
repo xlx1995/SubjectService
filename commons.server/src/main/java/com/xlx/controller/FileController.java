@@ -17,6 +17,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: 徐林啸
@@ -29,12 +30,13 @@ import java.util.List;
 @Slf4j
 public class FileController {
 
+    private String filePath = "E:\\file";
+
     @ResponseBody
     @ApiOperation(value = "文件上传接口", notes = "文件上传", httpMethod = "POST", response = ReMessage.class)
     @RequestMapping(value = "upload" , method = RequestMethod.POST)
     public ReMessage upload(HttpServletRequest request) {
         ReMessage reMessage = new ReMessage();
-        //检测是不是存在上传文件
         InputStream inputStream = null;
         OutputStream outputStream = null;
         DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -57,5 +59,31 @@ public class FileController {
         reMessage.setSuccess(flag);
         return reMessage;
     }
+
+    @ResponseBody
+    @ApiOperation(value = "文件下载接口", notes = "文件下载", httpMethod = "GET", response = byte.class)
+    @RequestMapping(value = "download" , method = RequestMethod.GET)
+    public byte[] download(@RequestParam("fileName") String fileName){
+        String filepath = filePath + File.separator + fileName;
+        return FileUtils.getByte(filepath);
+    }
+
+    @RequestMapping(value = "delete" , method = RequestMethod.DELETE)
+    @ResponseBody
+    @ApiOperation(value = "文件删除接口", notes = "文件删除", httpMethod = "DELETE", response = String.class)
+    public String delete(@RequestParam("fileName") String fileName){
+        File file = new File(filePath + File.separator +fileName);
+        if(!file.exists()){
+            return "1";
+        }
+        if(file.delete()){
+            return "0";
+        }
+        else {
+            return "1";
+        }
+
+    }
+
 
 }

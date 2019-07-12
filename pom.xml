@@ -9,13 +9,13 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>publicForSubject</module>
-        <module>com.xlx.server</module>
         <module>com.xlx.http</module>
         <module>redis.client</module>
         <module>dubbo.common</module>
         <module>kafka</module>
         <module>com.xlx.commons</module>
         <module>XClient</module>
+        <module>commons.server</module>
     </modules>
     <packaging>pom</packaging>
 
