@@ -3,7 +3,8 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/cache" xmlns:aop="http://www.springframework.org/schema/aop"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
 
     <context:component-scan base-package="com.xlx.impl"/>
@@ -47,6 +48,20 @@
 
 
 
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <!-- 核心线程数 -->
+        <property name="corePoolSize" value="5" />
+        <!-- 最大线程数 -->
+        <property name="maxPoolSize" value="50" />
+        <!-- 队列最大长度 -->
+        <property name="queueCapacity" value="1000" />
+        <!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+        <property name="keepAliveSeconds" value="60" />
+    </bean>
+    <!-- 注解式 -->
+    <task:annotation-driven />
+
+
     <bean class="com.xlx.util.CIPHelper" id="CIPHelper">
         <property name="url" value="${userUrl}"/>
     </bean>
@@ -55,7 +70,13 @@
     <bean id="kafkaProducerClient" class="com.xlx.kafka.client.KafkaProducerClient"></bean>
 
     <bean class="com.xlx.dbcache.UserCachePersistence" id="userCache" init-method="init"></bean>
-
+    <bean class="com.xlx.kafka.client.AdminClientUtils"/>
+    <bean class="com.xlx.kafka.facotry.AdminClientFacotry" id="adminClientUtils">
+        <property name="address" value="${KafkaServers}"/>
+    </bean>
+    <bean class="com.xlx.zk.client.ZkClient">
+       <property name="address" value="${ZKIp}"/>
+    </bean>
 
     <import resource="classpath:application-redis.xml"/>
     <import resource="application-dubbo.xml"/>

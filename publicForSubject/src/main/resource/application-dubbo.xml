@@ -14,7 +14,7 @@
     <!-- 用dubbo协议在20880端口暴露服务 -->
     <dubbo:protocol name="dubbo" port="20880" />
     <!-- 声明需要暴露的服务接口 -->
-    <dubbo:service interface="com.xlx.service.UserService"  ref="userService" />
+    <dubbo:service interface="com.xlx.service.UserService"  ref="userService" timeout="1200000"/>
     <!-- 具体的实现bean -->
     <bean id="userService" class="com.xlx.impl.UserServiceImpl" />
 

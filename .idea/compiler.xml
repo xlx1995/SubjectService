@@ -15,6 +15,7 @@
         <module name="publicForSubject" />
         <module name="redisclient" />
         <module name="XClient" />
+        <module name="Zookeeper" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

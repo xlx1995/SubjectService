@@ -9,6 +9,7 @@ public class CIPHelper {
 
     private String url;
 
+    private int a;
 
     public String getUrl() {
         return url;

@@ -2,23 +2,66 @@ package com.xlx.dbcache;
 
 import com.xlx.kafka.client.KafkaConsumerClient;
 import com.xlx.kafka.client.KafkaProducerClient;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.producer.Callback;
+import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+import java.util.Arrays;
+import java.util.Map;
 
 /**
  * @Auther: 徐林啸
  * @Date: 2019/6/30 22:42
  * @Description:
  */
+@Slf4j
 public class UserCachePersistence implements RedisDistributedFacotry {
 
+
+    /**
+     * kafka消费者客户端
+     */
     @Autowired
     private KafkaProducerClient kafkaProducerClient;
 
+    /**
+     * kafka生产者客户端
+     */
     @Autowired
     private KafkaConsumerClient kafkaConsumerClient;
 
+    @Autowired
+    private ThreadPoolTaskExecutor taskExecutor;
+
+    /**
+     * 用户信息缓存
+     */
+    private Map<String, Object> userChace;
+
+
     @Override
     public void init() {
-
+        Runnable consumerTask = () -> {
+            KafkaConsumer consumer = kafkaConsumerClient.getKafkaConsumer("group1");
+            consumer.subscribe(Arrays.asList("first"));
+            try {
+                while (true) {
+                    ConsumerRecords<String, String> records = consumer.poll(1000);
+                    for (ConsumerRecord<String, String> record : records) {
+                        log.info("success to subscribe topic " + record.key() +record.value());
+                    }
+                }
+            } catch (Throwable e){
+                log.error("fail to connection consumer ex[{}]",new Object[]{e});
+            }
+        };
+        taskExecutor.execute(consumerTask);
     }
 }

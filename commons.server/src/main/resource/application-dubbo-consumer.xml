@@ -18,7 +18,7 @@
     <!-- 注册中心地址 -->
     <dubbo:registry protocol="zookeeper" address="zookeeper://192.168.159.130:9689" />
 
-    <dubbo:reference interface="com.xlx.service.UserService" id="userService" check="false" />
+    <dubbo:reference interface="com.xlx.service.UserService" id="userService" check="false" timeout="1200000" />
 
 
 
