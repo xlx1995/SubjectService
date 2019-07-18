@@ -21,7 +21,7 @@ public class ZkClient implements Watcher{
      * 连接地址
      */
     @Autowired
-    private String address ;
+    private String address;
 
     public void setAddress(String address) {
         this.address = address;
@@ -30,14 +30,14 @@ public class ZkClient implements Watcher{
     /**
      * session会话
      */
-    private static final Integer SESSION_TIMEOUT = 2000;
+    private static final Integer SESSION_TIMEOUT = 5000;
     /**
      * 信号量,阻塞程序执行,用户必须等待zookeeper连接成功,发送成功信号
      */
 
     private static final CountDownLatch COUNT_DOWN_LATCH = new CountDownLatch(1);
 
-    private ZooKeeper zk;
+    private  ZooKeeper zk;
 
     public void createConnection() {
         try {
@@ -91,13 +91,13 @@ public class ZkClient implements Watcher{
      * @param path
      * @param data
      */
-    public boolean createNode(String path, String data) {
+    public  boolean createNode(String path, String data) {
         try {
             this.exists(path, true);
             //阻塞，当等于0的时候释放
             COUNT_DOWN_LATCH.await();
             zk.create(path, data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
-            System.out.println("###新增节点信息path:" + path + " data:" + data);
+            log.info("###新增节点信息path:" + path + " data:" + data);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -111,7 +111,7 @@ public class ZkClient implements Watcher{
      * @param path
      * @param data
      */
-    public boolean updateNode(String path, String data) {
+    public  boolean updateNode(String path, String data) {
         try {
             this.exists(path, true);
             //阻塞，当等于0的时候释放
@@ -119,7 +119,7 @@ public class ZkClient implements Watcher{
             //zk的数据版本是从0开始计数的。如果客户端传入的是-1，则表示zk服务器需要基于最新的数据进行更新。如果对zk的数据节点的更新操作没有原子性要求则可以使用-1.
             //version参数指定要更新的数据的版本, 如果version和真实的版本不同, 更新操作将失败. 指定version为-1则忽略版本检查
             zk.setData(path, data.getBytes(), -1);
-            System.out.println("###修改节点信息path:" + path + " data:" + data);
+            log.info("###修改节点信息path:" + path + " data:" + data);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -132,14 +132,14 @@ public class ZkClient implements Watcher{
      *
      * @param path
      */
-    public boolean deleteNode(String path) {
+    public  boolean deleteNode(String path) {
         try {
             this.exists(path, true);
             //阻塞，当等于0的时候释放
             COUNT_DOWN_LATCH.await();
             //version参数指定要更新的数据的版本, 如果version和真实的版本不同, 更新操作将失败. 指定version为-1则忽略版本检查
             zk.delete(path, -1);
-            System.out.println("###删除节点信息path:" + path);
+            log.info("###删除节点信息path:" + path);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -154,9 +154,9 @@ public class ZkClient implements Watcher{
      * @param needWatch
      * @return
      */
-    public Stat exists(String path, boolean needWatch) {
+    public  Stat exists(String path, boolean needWatch) {
         try {
-            return this.zk.exists(path, needWatch);
+            return zk.exists(path, needWatch);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -170,8 +170,8 @@ public class ZkClient implements Watcher{
      * @throws KeeperException
      * @throws InterruptedException
      */
-    public List<String> getChildren(String path) throws KeeperException, InterruptedException {
-        List<String> children = zk.getChildren(path, false);
+    public  List<String> getChildren(String path) throws KeeperException, InterruptedException {
+        List<String> children = this.zk.getChildren(path, false);
         return children;
     }
 
@@ -181,12 +181,12 @@ public class ZkClient implements Watcher{
      */
     public void close() {
         try {
-            if (zk != null) {
-                System.out.println("###zookeeper服务已关闭");
-                zk.close();
+            if (this.zk != null) {
+                log.info("###zookeeper服务已关闭");
+                this.zk.close();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("###zookeeper服务错误关闭，ex{}",e);
         }
     }
 

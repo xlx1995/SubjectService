@@ -22,7 +22,7 @@ public class AdminClientFacotry {
         this.address = address;
     }
 
-    public static AdminClient getAdminClient(){
+    public  AdminClient getAdminClient(){
         AdminClient client = null;
         Properties properties = new Properties();
         properties.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, address);
@@ -33,6 +33,8 @@ public class AdminClientFacotry {
         }
         return client;
     }
+
+
 
 
 }

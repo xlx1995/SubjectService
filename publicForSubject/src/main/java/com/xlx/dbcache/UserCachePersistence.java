@@ -2,6 +2,7 @@ package com.xlx.dbcache;
 
 import com.xlx.kafka.client.KafkaConsumerClient;
 import com.xlx.kafka.client.KafkaProducerClient;
+import com.xlx.util.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -50,7 +51,7 @@ public class UserCachePersistence implements RedisDistributedFacotry {
     public void init() {
         Runnable consumerTask = () -> {
             KafkaConsumer consumer = kafkaConsumerClient.getKafkaConsumer("group1");
-            consumer.subscribe(Arrays.asList("first"));
+            consumer.subscribe(Arrays.asList(Constants.USERTOPIC));
             try {
                 while (true) {
                     ConsumerRecords<String, String> records = consumer.poll(1000);

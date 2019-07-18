@@ -3,8 +3,8 @@ import com.xlx.kafka.client.KafkaConsumerClient;
 import com.xlx.kafka.client.KafkaProducerClient;
 import com.xlx.db.entity.Person;
 
+import com.xlx.zk.client.ZkClient;
 import kafka.utils.ZkUtils;
-import org.I0Itec.zkclient.ZkClient;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -88,7 +88,16 @@ public class test {
     @Test
     public void zk() throws KeeperException, InterruptedException {
 
-
+        ZkClient zkClient = new ZkClient();
+        zkClient.createConnection();
+        Stat exists = zkClient.exists("/brokers/topics/user", false);
+        if(exists != null) {
+            System.out.println("Node exists and the node version is " +
+                    exists.getVersion());
+        } else {
+            System.out.println("Node does not exists");
+        }
+        zkClient.close();
 
     }
     @Test

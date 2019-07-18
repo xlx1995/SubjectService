@@ -3,12 +3,9 @@ package com.xlx.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
 import com.xlx.common.cache.UserCache;
-
 import com.xlx.db.mapper.UserMapper;
-import com.xlx.dbcache.UserCachePersistence;
 import com.xlx.entity.User;
 import com.xlx.kafka.client.AdminClientUtils;
-import com.xlx.kafka.client.KafkaConsumerClient;
 import com.xlx.kafka.client.KafkaProducerClient;
 import com.xlx.kafka.facotry.AdminClientFacotry;
 import com.xlx.service.UserService;
@@ -16,6 +13,7 @@ import com.xlx.util.Constants;
 import com.xlx.util.ReMessage;
 import com.xlx.zk.client.ZkClient;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -46,8 +44,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private AdminClientFacotry adminClientFacotry;
 
-    @Autowired
-    private AdminClientUtils adminClientUtils;
+
 
     @Autowired
     private UserMapper um;
@@ -158,7 +155,12 @@ public class UserServiceImpl implements UserService {
                     @Override
                     public void run() {
                         zkClient.createConnection();
+                        AdminClient adminClient = null;
                         Stat exists = zkClient.exists(Constants.KAFKANODE + Constants.USERTOPIC, false);
+                        if(null == exists){
+                            adminClient = adminClientFacotry.getAdminClient();
+                            AdminClientUtils.createTopics(adminClient, Constants.USERTOPIC);
+                        }
                         Producer<String, String> kafkaProducer = kafkaProducerClient.getKafkaProducer();
                         kafkaProducer.send(new ProducerRecord<>(Constants.USERTOPIC, user.getUser_id(), JSON.toJSONString(user)), new Callback() {
                             @Override
@@ -171,6 +173,8 @@ public class UserServiceImpl implements UserService {
                             }
                         });
                         kafkaProducerClient.close(kafkaProducer);
+                        AdminClientUtils.close(adminClient);
+                        zkClient.close();
                     }
                 };
                 taskExecutor.execute(runnable);
