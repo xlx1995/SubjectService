@@ -17,6 +17,7 @@
         <module>XClient</module>
         <module>commons.server</module>
         <module>Zookeeper</module>
+        <module>webservice</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -1,16 +1,12 @@
 package com.xlx.dbcache;
 
-import com.xlx.kafka.client.KafkaConsumerClient;
 import com.xlx.kafka.client.KafkaProducerClient;
+import com.xlx.kafka.facotry.KafkaConsumerFactory;
 import com.xlx.util.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.clients.producer.Callback;
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
@@ -25,18 +21,11 @@ import java.util.Map;
 @Slf4j
 public class UserCachePersistence implements RedisDistributedFacotry {
 
-
-    /**
-     * kafka消费者客户端
-     */
-    @Autowired
-    private KafkaProducerClient kafkaProducerClient;
-
     /**
      * kafka生产者客户端
      */
     @Autowired
-    private KafkaConsumerClient kafkaConsumerClient;
+    private KafkaConsumerFactory kafkaConsumerFactory;
 
     @Autowired
     private ThreadPoolTaskExecutor taskExecutor;
@@ -50,7 +39,7 @@ public class UserCachePersistence implements RedisDistributedFacotry {
     @Override
     public void init() {
         Runnable consumerTask = () -> {
-            KafkaConsumer consumer = kafkaConsumerClient.getKafkaConsumer("group1");
+            KafkaConsumer consumer = kafkaConsumerFactory.getConsumer("group1");
             consumer.subscribe(Arrays.asList(Constants.USERTOPIC));
             try {
                 while (true) {

@@ -14,6 +14,7 @@
         <module name="kafka" />
         <module name="publicForSubject" />
         <module name="redisclient" />
+        <module name="webservice" />
         <module name="XClient" />
         <module name="Zookeeper" />
       </profile>
