@@ -1,8 +1,10 @@
 import com.alibaba.fastjson.JSON;
+import com.xlx.kafka.SendCallback;
 import com.xlx.kafka.client.KafkaConsumerClient;
 import com.xlx.kafka.client.KafkaProducerClient;
 import com.xlx.db.entity.Person;
 
+import com.xlx.kafka.facotry.KafkaConsumerFactory;
 import com.xlx.zk.client.ZkClient;
 import kafka.utils.ZkUtils;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -53,14 +55,13 @@ public class test {
     public void producer(){
         KafkaProducerClient kafkaProducerClient = new KafkaProducerClient();
         Producer<String, String> kafkaProducer = kafkaProducerClient.getKafkaProducer();
-        kafkaProducer.send(new ProducerRecord<>("user", "aaaa","aaaa"),new Callback(){
-
+        kafkaProducer.send(new ProducerRecord<>("user", "aaaa","aaaa"),new SendCallback(){
             @Override
             public void onCompletion(RecordMetadata metadata, Exception exception) {
                 if(exception == null){
                     System.out.println("发送成功");
                 }else{
-
+                    kafkaProducerClient.close(kafkaProducer);
                 }
             }
         });
@@ -69,8 +70,8 @@ public class test {
     }
     @Test
     public void consumer(){
-        KafkaConsumerClient kafkaConsumerClient = new KafkaConsumerClient();
-        KafkaConsumer consumer = kafkaConsumerClient.getKafkaConsumer("group1");
+        KafkaConsumerFactory kafkaConsumerFactory = new KafkaConsumerFactory();
+        KafkaConsumer consumer = kafkaConsumerFactory.getConsumer("group1");
         consumer.subscribe(Arrays.asList("first"));
         try {
             while (true){
@@ -80,7 +81,7 @@ public class test {
                 }
             }
         }finally {
-            kafkaConsumerClient.close(consumer);
+            KafkaConsumerClient.close(consumer);
         }
 
     }

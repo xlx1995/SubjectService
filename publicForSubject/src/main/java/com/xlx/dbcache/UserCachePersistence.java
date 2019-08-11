@@ -1,6 +1,6 @@
 package com.xlx.dbcache;
 
-import com.xlx.kafka.client.KafkaProducerClient;
+
 import com.xlx.kafka.facotry.KafkaConsumerFactory;
 import com.xlx.util.Constants;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +12,8 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
 
 /**
  * @Auther: 徐林啸
@@ -35,6 +37,7 @@ public class UserCachePersistence implements RedisDistributedFacotry {
      */
     private Map<String, Object> userChace;
 
+    private volatile boolean isRunning = true;
 
     @Override
     public void init() {
@@ -53,5 +56,9 @@ public class UserCachePersistence implements RedisDistributedFacotry {
             }
         };
         taskExecutor.execute(consumerTask);
+
+
+
+
     }
 }

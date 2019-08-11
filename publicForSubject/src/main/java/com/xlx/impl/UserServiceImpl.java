@@ -19,8 +19,6 @@ import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.zookeeper.data.Stat;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
@@ -43,8 +41,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private AdminClientFacotry adminClientFacotry;
-
-
 
     @Autowired
     private UserMapper um;

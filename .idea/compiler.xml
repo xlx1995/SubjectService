@@ -10,9 +10,11 @@
         <module name="com.xlx.commons" />
         <module name="com.xlx.http" />
         <module name="commonsserver" />
+        <module name="cserver" />
         <module name="dubbo.common" />
         <module name="kafka" />
         <module name="publicForSubject" />
+        <module name="redis.client" />
         <module name="redisclient" />
         <module name="webservice" />
         <module name="XClient" />

@@ -36,6 +36,7 @@ public class KafkaProducerClient {
                 props.put("buffer.memory", 33554432);
                 props.put("max.block.ms", 3000);
                 props.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, "lz4");
+                props.put(ProducerConfig.MAX_REQUEST_SIZE_CONFIG, 10485760);
                 //k ,v 的序列化类
                 props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
                 props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");

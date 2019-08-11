@@ -7,6 +7,8 @@ package com.xlx.dbcache;
  */
 public interface RedisDistributedFacotry {
 
+
+
     public void init();
 
 }
