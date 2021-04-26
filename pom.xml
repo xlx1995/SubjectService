@@ -40,7 +40,7 @@
         <logback-ext-spring-version>0.1.1</logback-ext-spring-version>
         <jcl-over-slf4j-version>1.7.25</jcl-over-slf4j-version>
         <springfox.version>2.4.0</springfox.version>
-        <commons-io-version>2.6</commons-io-version>
+        <commons-io-version>2.7</commons-io-version>
         <httpcore-version>4.4.9</httpcore-version>
         <httpclient-version>4.5.5</httpclient-version>
     </properties>
